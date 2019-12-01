@@ -14,10 +14,9 @@ fn calc() -> i64 {
 }
 
 fn fuel(i: i64) -> i64 {
-    let mut f = i / 3 - 2;
+    let f = i / 3 - 2;
     if f < 0 {
         return 0;
     }
-    f += fuel(f);
-    f
+    f + fuel(f)
 }
