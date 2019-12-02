@@ -10,14 +10,13 @@ fn main() {
 
     let (noun, verb) = (0..100)
         .cartesian_product(0..100)
-        .filter(|(noun, verb)| {
+        .find(|(noun, verb)| {
             let mut program = program.clone();
             program[1] = *noun;
             program[2] = *verb;
 
             run(&mut program) == 19_690_720
         })
-        .next()
         .unwrap();
 
     println!("Result: {}", 100 * noun + verb);
