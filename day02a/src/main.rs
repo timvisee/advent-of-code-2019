@@ -10,18 +10,17 @@ fn main() {
     program[1] = 12;
     program[2] = 2;
 
-    run(&mut program);
-
-    println!("Result: {}", program[0]);
+    println!("Result: {}", run(&mut program));
 }
 
-fn run(p: &mut [usize]) {
+fn run(p: &mut [usize]) -> usize {
     for i in (0..).step_by(4) {
         match p[i] {
-            1 => p[p[i + 3]] = p[i + 1..i + 3].iter().map(|i| p[*i]).sum(),
-            2 => p[p[i + 3]] = p[i + 1..i + 3].iter().map(|i| p[*i]).product(),
-            99 => return,
+            1 => p[p[i + 3]] = p[p[i + 1]] + p[p[i + 2]],
+            2 => p[p[i + 3]] = p[p[i + 1]] * p[p[i + 2]],
+            99 => break,
             _ => panic!("Unknown OPCODE"),
         }
     }
+    p[0]
 }
