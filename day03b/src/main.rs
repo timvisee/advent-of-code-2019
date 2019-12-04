@@ -10,7 +10,7 @@ fn main() {
         .map(Wire::parse)
         .tuple_combinations()
         .flat_map(|(a, b)| a.intersections(&b))
-        .min_by(|a, b| a.partial_cmp(&b).unwrap());
+        .min();
 
     println!("Distance: {:?}", intersect.unwrap());
 }
