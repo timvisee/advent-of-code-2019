@@ -11,13 +11,11 @@ fn main() {
                 .find(|i| **i != b'2')
                 .unwrap_or(&b'1')
             {
-                b'0' => ' ',
                 b'1' => '#',
-                b'2' => ' ',
-                _ => unreachable!(),
+                _ => ' ',
             }
         })
         .chunks(25)
         .into_iter()
-        .for_each(|a| println!("{}", a.collect::<String>()));
+        .for_each(|p| println!("{}", p.collect::<String>()));
 }
