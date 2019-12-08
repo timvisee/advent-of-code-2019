@@ -11,22 +11,24 @@ fn main() {
         .collect();
 
     println!(
-        "Sequence: {:?}",
-        (5..10).permutations(5).max_by_key(|i| run_amplifiers(&mut program.clone(), i.to_vec())).unwrap(),
+        "Signal: {}",
+        (5..10).permutations(5).map(|i|
+            run_amps(&mut program.clone(), i.to_vec())
+        ).max().unwrap(),
     );
 }
 
-fn run_amplifiers(p: &mut [isize], mut i: Vec<isize>) -> isize {
+fn run_amps(p: &mut [isize], mut i: Vec<isize>) -> isize {
     let mut a = vec![(p.to_vec(), 0); i.len()];
     let mut o = 0;
     loop {
-        for (ref mut mem, ref mut pointer) in &mut a {
+        for (ref mut m, ref mut p) in &mut a {
             let mut s = vec![o];
-            if *pointer == 0 {
+            if *p == 0 {
                 s.insert(0, i.pop().unwrap());
             }
 
-            match run(mem, pointer, s) {
+            match run(m, p, s) {
                 Some(s) => o = s,
                 None => return o,
             }

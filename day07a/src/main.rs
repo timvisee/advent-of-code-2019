@@ -11,10 +11,10 @@ fn main() {
         .collect();
 
     println!(
-        "Sequence: {:?}",
-        (0..5).permutations(5).max_by_key(|i| i.iter()
+        "Signal: {}",
+        (0..5).permutations(5).map(|i| i.iter()
             .fold(0, |signal, i| run(&mut program.clone(), vec![*i, signal]))
-        ).unwrap(),
+        ).max().unwrap(),
     );
 }
 

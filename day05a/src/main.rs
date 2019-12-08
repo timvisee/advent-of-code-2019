@@ -12,7 +12,7 @@ fn main() {
     println!("Code: {}", run(&mut program, 1).last().unwrap());
 }
 
-fn run(p: &mut [isize], i: isize, ) -> Vec<isize> {
+fn run(p: &mut [isize], i: isize) -> Vec<isize> {
     let mut n = 0;
     let mut o = vec![];
     let get = |p: &[_], i, m| if let Some(1) = m { p[i as usize] } else { p[p[i as usize] as usize] };
