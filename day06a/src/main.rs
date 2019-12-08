@@ -17,7 +17,6 @@ fn main() {
     );
 }
 
-#[inline]
 fn count(map: &HashMap<&str, &str>, item: &str) -> usize {
     map.get(item).map(|item| count(map, item) + 1).unwrap_or(0)
 }

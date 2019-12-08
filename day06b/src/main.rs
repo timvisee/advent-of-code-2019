@@ -11,7 +11,7 @@ fn main() {
             map
         });
 
-    println!("Distance: {}", distance(&map, "YOU", "SAN"),);
+    println!("Distance: {}", distance(&map, "YOU", "SAN"));
 }
 
 #[inline]
