@@ -12,15 +12,15 @@ fn run(p: &mut Vec<isize>, mut i: Vec<isize>) -> isize {
     let mut n = 0;
     let mut rb = 0;
     let get = |p: &[_], i, m, rb| match m {
-            Some(0) | None => *p.get(*p.get(i as usize).unwrap_or(&0) as usize).unwrap_or(&0),
+            Some(0) | None => *p.get(i as usize).and_then(|i| p.get(*i as usize)).unwrap_or(&0),
             Some(1) => *p.get(i as usize).unwrap_or(&0),
-            Some(2) => *p.get((*p.get(i as usize).unwrap_or(&0) + rb) as usize).unwrap_or(&0),
+            Some(2) => *p.get(i as usize).and_then(|i| p.get((*i + rb) as usize)).unwrap_or(&0),
             _ => unreachable!(),
         };
     let set = |p: &mut Vec<_>, i, m, v, rb| {
             let i = match m {
                 Some(0) | None => p[i] as usize,
-                Some(2) => (rb as isize + p[i] as isize) as usize,
+                Some(2) => (rb + p[i]) as usize,
                 _ => unreachable!(),
             };
             if i >= p.len() {
