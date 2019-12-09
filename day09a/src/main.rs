@@ -58,10 +58,7 @@ fn run(p: &mut Vec<isize>, mut i: Vec<isize>) -> isize {
                 n + 4
             }
             (9, 9) => break,
-            (9, _) => {
-                rb += get(p, n + 1, inst.pop(), rb);
-                n + 2
-            }
+            (9, _) => { rb += get(p, n + 1, inst.pop(), rb); n + 2 }
             _ => panic!("Unknown OPCODE"),
         };
     }

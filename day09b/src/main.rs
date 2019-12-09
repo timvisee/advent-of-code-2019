@@ -5,7 +5,7 @@ fn main() {
         .filter_map(|l| l.trim().parse::<isize>().ok())
         .collect();
 
-    println!("BOOST code: {:?}", run(&mut program, vec![2]));
+    println!("Coordinate: {:?}", run(&mut program, vec![2]));
 }
 
 fn run(p: &mut Vec<isize>, mut i: Vec<isize>) -> isize {
@@ -29,10 +29,13 @@ fn run(p: &mut Vec<isize>, mut i: Vec<isize>) -> isize {
             p[i] = v;
         };
     while n < p.len() {
-        let mut inst = format!("{}", p[n])
-            .bytes()
-            .map(|b| b - b'0')
-            .collect::<Vec<_>>();
+        let mut inst = vec![
+            (p[n] / 10000) % 10,
+            (p[n] / 1000) % 10,
+            (p[n] / 100) % 10,
+            (p[n] / 10) % 10,
+            p[n] % 10,
+        ];
         n = match (inst.pop().unwrap(), inst.pop().unwrap_or(0)) {
             (1, _) => {
                 let v = get(p, n + 1, inst.pop(), rb) + get(p, n + 2, inst.pop(), rb);
@@ -58,10 +61,7 @@ fn run(p: &mut Vec<isize>, mut i: Vec<isize>) -> isize {
                 n + 4
             }
             (9, 9) => break,
-            (9, _) => {
-                rb += get(p, n + 1, inst.pop(), rb);
-                n + 2
-            }
+            (9, _) => { rb += get(p, n + 1, inst.pop(), rb); n + 2 }
             _ => panic!("Unknown OPCODE"),
         };
     }
