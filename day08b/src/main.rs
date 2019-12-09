@@ -9,7 +9,7 @@ fn main() {
                 .skip(i)
                 .step_by(25 * 6)
                 .find(|i| **i != b'2')
-                .unwrap_or(&b'1')
+                .unwrap()
             {
                 b'1' => '#',
                 _ => ' ',
