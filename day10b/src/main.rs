@@ -1,6 +1,7 @@
 #![feature(vec_remove_item)]
 use std::collections::HashMap;
 use itertools::Itertools;
+use rayon::prelude::*;
 
 fn main() {
     let mut astroids: Vec<(usize, usize)> = std::fs::read_to_string("./input.txt")
@@ -11,7 +12,7 @@ fn main() {
         .collect();
 
     let ((x, y), _) = &astroids
-        .iter()
+        .par_iter()
         .map(|(x, y)| (
             (*x, *y),
             astroids
@@ -36,8 +37,7 @@ fn main() {
             map.entry(angle).or_default().push(((*x, *y), dist));
             map
         });
-    angled_map.values_mut()
-        .for_each(|l| l.sort_by_key(|(_, dist)| -dist));
+    angled_map.iter_mut().for_each(|(_, v)| v.sort_by_key(|(_, dist)| -dist));
 
     println!(
         "200th position: {:?}",

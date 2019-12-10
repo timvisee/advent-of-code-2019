@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use rayon::prelude::*;
 
 fn main() {
     let astroids: Vec<(usize, usize)> = std::fs::read_to_string("./input.txt")
@@ -11,7 +12,7 @@ fn main() {
     println!(
         "Max: {}",
         astroids
-            .iter()
+            .par_iter()
             .map(|(x, y)| {
                 astroids
                     .iter()
