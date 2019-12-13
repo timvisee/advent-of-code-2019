@@ -20,7 +20,7 @@ fn main() {
             }
             map.entry((x, y)).and_modify(|v| *v = b).or_insert(b);
         }
-        c.i.send((ball - pad).min(1).max(-1)).unwrap();
+        c.i.send((ball - pad).signum()).unwrap();
         done
     } {}
 

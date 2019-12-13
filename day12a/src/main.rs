@@ -13,9 +13,9 @@ fn main() {
     for _ in 0..1000 {
         vel.iter_mut().enumerate().for_each(|(i, v)| {
             pos[0..i].iter().chain(pos[i..].iter().skip(1)).for_each(|o| {
-                v.0 += (o.0 - pos[i].0).min(1).max(-1);
-                v.1 += (o.1 - pos[i].1).min(1).max(-1);
-                v.2 += (o.2 - pos[i].2).min(1).max(-1);
+                v.0 += (o.0 - pos[i].0).signum();
+                v.1 += (o.1 - pos[i].1).signum();
+                v.2 += (o.2 - pos[i].2).signum();
             });
         });
         pos.iter_mut().zip(&vel).for_each(|(p, v)| { p.0 += v.0; p.1 += v.1; p.2 += v.2 });
