@@ -8,4 +8,5 @@ edition = "2018"
 
 [dependencies]
 num-integer = "0.1"
+rayon = "1.2"
 regex = "1"

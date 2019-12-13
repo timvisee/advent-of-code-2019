@@ -1,4 +1,5 @@
 use num_integer::lcm;
+use rayon::prelude::*;
 use regex::Regex;
 
 fn main() {
@@ -24,14 +25,15 @@ fn main() {
             });
             run_pos.iter_mut().zip(&run_vel).for_each(|(p, v)| { p.0 += v.0; p.1 += v.1; p.2 += v.2 });
             if (0..run_pos.len()).all(|i| f(&run_pos[i]) == f(&pos[i]) && f(&run_vel[i]) == f(&vel[i])) {
-                return i + 1;
+                return i;
             }
         }
         unreachable!()
     };
 
+    let comps: [fn(&(_, _, _)) -> _; 3] = [|v| v.0, |v| v.1, |v| v.2];
     println!(
         "Steps: {}",
-        lcm(s(&pos, &vel, |v| v.0), lcm(s(&pos, &vel, |v| v.1), s(&pos, &vel, |v| v.2)))
+        comps.into_par_iter().map(|f| s(&pos, &vel, *f)).reduce(|| 1, lcm),
     );
 }
