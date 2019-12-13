@@ -13,8 +13,8 @@ fn main() {
     } {
         *hull.entry((x, y)).or_default() = c.o.try_recv().unwrap();
         dir = dir.rotate_right(c.o.try_recv().unwrap() as u32 * 6 + 1);
-        x += ((dir & 1 << 1) >> 1) as isize + ((dir & 1 << 3) >> 3) as isize * -1;
-        y += (dir & 1) as isize * -1 + ((dir & 1 << 2) >> 2) as isize;
+        x += ((dir & 1 << 1) >> 1) as isize - ((dir & 1 << 3) >> 3) as isize;
+        y += -((dir & 1) as isize) + ((dir & 1 << 2) >> 2) as isize;
     }
 
     for y in hull.keys().map(|k| k.1).min().unwrap()..=hull.keys().map(|k| k.1).max().unwrap() {
@@ -57,7 +57,7 @@ impl Computer {
 
     #[must_use]
     #[inline(always)]
-    fn acc<'a>(&'a mut self, i: isize, m: Option<isize>) -> &'a mut isize {
+    fn acc(&mut self, i: isize, m: Option<isize>) -> &mut isize {
         let i = match m {
             Some(0) | None => self.p[i as usize] as usize,
             Some(1) => return &mut self.p[i as usize],
