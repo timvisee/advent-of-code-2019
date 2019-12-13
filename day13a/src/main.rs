@@ -24,6 +24,7 @@ struct Computer {
     _o: Sender<isize>,
 }
 
+#[cfg_attr(rustfmt, rustfmt_skip)]
 impl Computer {
     pub fn from_file(path: &str) -> Self {
         let ((i, _i), (_o, o)) = (channel(), channel());
@@ -33,12 +34,7 @@ impl Computer {
                 .split(',')
                 .filter_map(|l| l.trim().parse().ok())
                 .collect(),
-            n: 0,
-            rb: 0,
-            i,
-            o,
-            _i,
-            _o,
+            n: 0, rb: 0, i, o, _i, _o,
         }
     }
 
@@ -89,42 +85,24 @@ impl Computer {
                     self._o.send(v).unwrap();
                     self.n + 2
                 }
-                (5, _) if *self.acc(self.n + 1, inst.pop()) != 0 => {
-                    *self.acc(self.n + 2, inst.pop()) as isize
-                }
+                (5, _) if *self.acc(self.n + 1, inst.pop()) != 0 => *self.acc(self.n + 2, inst.pop()) as isize,
                 (5, _) => self.n + 3,
-                (6, _) if *self.acc(self.n + 1, inst.pop()) == 0 => {
-                    *self.acc(self.n + 2, inst.pop()) as isize
-                }
+                (6, _) if *self.acc(self.n + 1, inst.pop()) == 0 => *self.acc(self.n + 2, inst.pop()) as isize,
                 (6, _) => self.n + 3,
                 (7, _) => {
-                    let v = if *self.acc(self.n + 1, inst.pop()) < *self.acc(self.n + 2, inst.pop())
-                    {
-                        1
-                    } else {
-                        0
-                    };
+                    let v = if *self.acc(self.n + 1, inst.pop()) < *self.acc(self.n + 2, inst.pop()) { 1 } else { 0 };
                     *self.acc(self.n + 3, inst.pop()) = v;
                     self.n + 4
                 }
                 (8, _) => {
-                    let v =
-                        if *self.acc(self.n + 1, inst.pop()) == *self.acc(self.n + 2, inst.pop()) {
-                            1
-                        } else {
-                            0
-                        };
+                    let v = if *self.acc(self.n + 1, inst.pop()) == *self.acc(self.n + 2, inst.pop()) { 1 } else { 0 };
                     *self.acc(self.n + 3, inst.pop()) = v;
                     self.n + 4
                 }
-                (9, 9) => break,
-                (9, _) => {
-                    self.rb += *self.acc(self.n + 1, inst.pop());
-                    self.n + 2
-                }
+                (9, 9) => return true,
+                (9, _) => { self.rb += *self.acc(self.n + 1, inst.pop()); self.n + 2 }
                 _ => panic!("Unknown OPCODE"),
             };
         }
-        true
     }
 }
