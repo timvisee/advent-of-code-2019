@@ -2,9 +2,7 @@ use std::str;
 
 fn main() {
     let raw = std::fs::read("./input.txt").unwrap();
-    let offset: usize = unsafe { str::from_utf8_unchecked(&raw[0..7]) }
-        .parse()
-        .unwrap();
+    let offset: usize = str::from_utf8(&raw[0..7]).unwrap().parse().unwrap();
     let mut data: Vec<isize> = raw
         .iter()
         .filter(|b| **b >= b'0')
