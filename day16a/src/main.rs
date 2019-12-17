@@ -25,22 +25,24 @@ fn main() {
 }
 
 fn run_phase(data: &mut Vec<isize>) {
-    let mut new_data = (0..data.len())
-        .into_par_iter()
-        .map(|row| {
-            ((0..)
-                .map(|i| i * 4 * (row + 1) + row)
-                .take_while(|i| *i < data.len())
-                .flat_map(|i| data[i..].iter().take(row + 1))
-                .sum::<isize>()
-                - (0..)
-                    .map(|i| i * 4 * (row + 1) + row + 2 * (row + 1))
+    mem::swap(
+        data,
+        &mut (0..data.len())
+            .into_par_iter()
+            .map(|row| {
+                ((0..)
+                    .map(|i| i * 4 * (row + 1) + row)
                     .take_while(|i| *i < data.len())
                     .flat_map(|i| data[i..].iter().take(row + 1))
-                    .sum::<isize>())
-            .abs()
-                % 10
-        })
-        .collect::<Vec<_>>();
-    mem::swap(data, &mut new_data);
+                    .sum::<isize>()
+                    - (0..)
+                        .map(|i| i * 4 * (row + 1) + row + 2 * (row + 1))
+                        .take_while(|i| *i < data.len())
+                        .flat_map(|i| data[i..].iter().take(row + 1))
+                        .sum::<isize>())
+                .abs()
+                    % 10
+            })
+            .collect::<Vec<_>>(),
+    );
 }
