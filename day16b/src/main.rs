@@ -7,10 +7,9 @@ fn main() {
         .iter()
         .filter(|b| **b >= b'0')
         .map(|b| (b - b'0') as isize)
-        .cycle()
-        .take((raw.len() - 1) * 10_000)
-        .skip(offset)
-        .collect();
+        .collect::<Vec<_>>()
+        .repeat(10_000);
+    data = data.split_off(offset);
 
     for _ in 0..100 {
         for i in (0..data.len() - 1).rev() {
